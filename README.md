@@ -1,12 +1,44 @@
 # M2101K6G Container Runtime Native Kernel
+# Xiaomi Redmi Note 10 Pro Container Runtime Native Kernel
 
-Native kernel patch set for running container/chroot-style workloads on **Xiaomi sweet** devices with **LineageOS 23.2**.
+✅ LXC / Docker  
+✅ real systemd (PID 1)  
+✅ isolate full namespace (PID / NET / IPC / MNT)
+
+Native kernel patch set for running container/chroot-style workloads on Xiaomi sweet devices with LineageOS 23.2.
+
+![Cover](./assets/screenshots/cover.jpg)
+
+---
+
+## Executive Summary
+
+The **M2101K6G Container Runtime Native Kernel** is a specialized patch set designed for the **Xiaomi Redmi Note 10 Pro** (codename **sweet**).
+
+Its primary goal is to enable **native containerization support** while preserving full daily-driver hardware functionality.
+
+By enabling a broad set of kernel features such as:
+
+- namespace isolation
+- cgroups
+- overlayfs
+- advanced networking
+- init/systemd compatibility
+
+this kernel allows the device to run more advanced isolated userspace workloads, including:
+
+- **LXC**
+- **Docker-style environments**
+- **real systemd (PID 1)**
+- **chroot / proot-like environments**
+
+This implementation is specifically tailored for **LineageOS 23.2** and should only be used on the exact supported device models listed below.
 
 ---
 
 ## Supported models
 
-Your device model must match **exactly** one of these:
+Your device model must match exactly one of these:
 
 - `M2101K6G`
 - `M2101K6R`
@@ -20,7 +52,8 @@ If your model is different, **do not use this build**.
 This setup was tested on:
 
 - `lineage-23.2-20260319-nightly-sweet-signed.zip`
-- [lineage-23.2-20260319-nightly-sweet-signed.zip](https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip)
+- <https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip>
+
 ---
 
 ## What this kernel patch set does
@@ -37,15 +70,51 @@ This patch set keeps normal device hardware support while adding the missing ker
 - netfilter/NAT
 - better compatibility with init systems and isolated userspace
 
-In short: this is a **device-ready kernel config with container-oriented native kernel support**.
+In short: this is a device-ready kernel config with container-oriented native kernel support.
+
+---
+
+## Compatibility and Requirements
+
+### Software environment
+
+The kernel configuration was developed and tested against:
+
+- `lineage-23.2-20260319-nightly-sweet-signed.zip`
+
+### Core functional capabilities
+
+The primary purpose of this kernel patch set is to transform a standard mobile kernel into one capable of supporting advanced container runtimes.
+
+Enabled capabilities include:
+
+- **Container Runtime Support**: full compatibility for LXC and Docker-style workloads
+- **Init System Compatibility**: support for real `systemd` as PID 1
+- **Isolation Mechanisms**: full namespace isolation including `PID`, `NET`, `IPC`, and `MNT`
+- **Environment Support**: enhanced support for `chroot` and `proot`-like environments
+
+---
+
+## Hardware Support Integrity
+
+A critical part of this patch set is preserving standard device hardware functionality after patching.
+
+### Supported hardware areas
+
+- **Media & Input**: Camera, Touchscreen, Haptics, Step motor
+- **Sensors**: Compass, Ultrasound proximity, Fingerprint (FPC / FS TEE)
+- **Connectivity**: NFC, IR (LIRC/SPI), MMC / storage stack
+- **Power**: Charging and power-management related support
 
 ---
 
 ## Root / patched boot image
 
-### Steps
+### Deployment methodology
 
-1. Extract or download the correct `boot.img` from - [Releases](https://github.com/IoT-VN/M2101K6G-container-runtime-native-kernel/releases/tag/v1.0)
+The patched kernel follows the standard Android Magisk-based workflow:
+
+1. Download the correct `boot.img` from - [Releases](https://github.com/IoT-VN/M2101K6G-container-runtime-native-kernel/releases/tag/v1.0)
 2. Open **Magisk** and patch that `boot.img`.
 3. Magisk will generate a patched image, usually named:
    - `magisk_patched.img`
@@ -64,32 +133,32 @@ fastboot flash boot magisk_patched.img
 
 The following hardware-related configs are enabled or preserved:
 
-- **Camera**
-- **Compass**
-- **Fingerprint**
-- **Haptics**
-- **IR**
-- **MMC / storage stack**
-- **NFC**
-- **Power / charging**
-- **Step motor**
-- **Touchscreen**
-- **Ultrasound proximity**
+- Camera
+- Compass
+- Fingerprint
+- Haptics
+- IR
+- MMC / storage stack
+- NFC
+- Power / charging
+- Step motor
+- Touchscreen
+- Ultrasound proximity
 
 ### Critical container/runtime fixes added
 
 The important runtime-oriented additions include:
 
-- **Namespaces** (`PID`, `UTS`, `IPC`, `USER`, `MNT`, `NET`)
-- **Cgroups** and process/resource accounting
-- **OverlayFS** and `FUSE`
-- **Seccomp** and syscall filtering
-- **VETH** and **Bridge** networking
-- **Netfilter / NAT / MASQUERADE / TCPMSS**
-- **Conntrack** and IPv4 NAT compatibility
-- **devtmpfs / devpts / tmpfs / proc / sysfs**
-- **BPF / tun / packet / unix sockets**
-- **IPC features** required by isolated userspace tools
+- Namespaces (`PID`, `UTS`, `IPC`, `USER`, `MNT`, `NET`)
+- Cgroups and process/resource accounting
+- OverlayFS and FUSE
+- Seccomp and syscall filtering
+- VETH and Bridge networking
+- Netfilter / NAT / MASQUERADE / TCPMSS
+- Conntrack and IPv4 NAT compatibility
+- devtmpfs / devpts / tmpfs / proc / sysfs
+- BPF / tun / packet / unix sockets
+- IPC features required by isolated userspace tools
 
 ---
 
@@ -201,9 +270,11 @@ CONFIG_US_PROXIMITY=y
 
 ---
 
-## Critical runtime patch block
+## Technical Kernel Configuration Breakdown
 
-### Namespaces
+### Namespace and isolation
+
+The kernel implements complete namespace support to ensure isolated environments can operate independently.
 
 ```config
 CONFIG_NAMESPACES=y
@@ -215,20 +286,18 @@ CONFIG_MNT_NS=y
 CONFIG_NET_NS=y
 ```
 
-### Core filesystems
+Additional security/isolation support:
 
 ```config
-CONFIG_PROC_FS=y
-CONFIG_SYSFS=y
-CONFIG_TMPFS=y
-CONFIG_TMPFS_POSIX_ACL=y
-CONFIG_DEVTMPFS=y
-CONFIG_DEVTMPFS_MOUNT=y
-CONFIG_DEVPTS_FS=y
-CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
+CONFIG_SECCOMP=y
+CONFIG_SECCOMP_FILTER=y
+CONFIG_BPF=y
+CONFIG_BPF_SYSCALL=y
 ```
 
-### Cgroups
+### Resource management (cgroups)
+
+Process and resource accounting are handled through enabled control groups:
 
 ```config
 CONFIG_CGROUPS=y
@@ -243,7 +312,24 @@ CONFIG_CGROUP_NET_PRIO=y
 CONFIG_CGROUP_CPUACCT=y
 ```
 
-### Chroot / userspace compatibility
+### Filesystems and userspace compatibility
+
+To support container images and isolated userspace tools, the following filesystem features are included:
+
+```config
+CONFIG_PROC_FS=y
+CONFIG_SYSFS=y
+CONFIG_TMPFS=y
+CONFIG_TMPFS_POSIX_ACL=y
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+CONFIG_DEVPTS_FS=y
+CONFIG_DEVPTS_MULTIPLE_INSTANCES=y
+CONFIG_OVERLAY_FS=y
+CONFIG_FUSE_FS=y
+```
+
+### IPC / chroot support
 
 ```config
 CONFIG_EVENTFD=y
@@ -253,7 +339,11 @@ CONFIG_SYSVIPC=y
 CONFIG_POSIX_MQUEUE=y
 ```
 
-### Container networking
+### Networking and netfilter
+
+The kernel includes a robust networking stack for container communication and NAT.
+
+#### Virtual networking
 
 ```config
 CONFIG_VETH=y
@@ -263,31 +353,7 @@ CONFIG_PACKET=y
 CONFIG_UNIX=y
 ```
 
-### Security / isolation
-
-```config
-CONFIG_SECCOMP=y
-CONFIG_SECCOMP_FILTER=y
-CONFIG_BPF=y
-CONFIG_BPF_SYSCALL=y
-```
-
-### Overlay / runtime filesystem
-
-```config
-CONFIG_OVERLAY_FS=y
-CONFIG_FUSE_FS=y
-```
-
-### Firmware loading
-
-```config
-CONFIG_FW_LOADER=y
-CONFIG_FW_LOADER_USER_HELPER=y
-CONFIG_FW_LOADER_COMPRESS=y
-```
-
-### Netfilter / NAT / iptables
+#### Netfilter / iptables / NAT
 
 ```config
 CONFIG_NETFILTER=y
@@ -310,37 +376,66 @@ CONFIG_IP_MULTIPLE_TABLES=y
 CONFIG_NETFILTER_XTABLES=y
 ```
 
-### Debug / kernel config exposure
+### Firmware / debug support
 
 ```config
+CONFIG_FW_LOADER=y
+CONFIG_FW_LOADER_USER_HELPER=y
+CONFIG_FW_LOADER_COMPRESS=y
 CONFIG_IKCONFIG=y
 CONFIG_IKCONFIG_PROC=y
 ```
 
 ---
 
-## Notes
+## Config flags worth noting
 
-- `CONFIG_ANDROID_PARANOID_NETWORK=n` is included to avoid connectivity issues on older kernels.
-- `OPENAI_BASE_URL` / userspace tooling notes are unrelated to this kernel patch set.
-- This project assumes you already know how to unpack ROM boot images and use fastboot safely.
+| Config Flag | Value | Rationale |
+|---|---|---|
+| `CONFIG_ANDROID_PARANOID_NETWORK` | `n` | Disabled to avoid connectivity issues on older kernels |
+| `CONFIG_CMDLINE` | `cgroup_disable=pressure ramoops_memreserve=4M` | Specific boot parameters for resource management and memory |
+| `CONFIG_IKCONFIG` | `y` | Exposes kernel configuration via `/proc` |
 
 ---
 
-## Warning
+## Notes
 
-Flashing the wrong boot image or using this on an unsupported model may cause:
+- `CONFIG_ANDROID_PARANOID_NETWORK=n` is included to avoid connectivity issues on older kernels.
+- This project assumes anh already knows how to unpack ROM boot images and use fastboot safely.
 
-- bootloop
-- broken radio/network
+---
+
+## Critical risks and warnings
+
+Flashing a modified kernel carries inherent risks.
+
+Deviation from the specified models or ROM versions may result in:
+
+- system bootloops
 - hardware regressions
-- loss of recovery/root state
+- broken radio/network behavior
+- loss of recovery access
+- loss of root state
 
-Double-check:
+Before flashing, verify:
 
 - device model
 - ROM version
-- source `boot.img`
-- patched output image
+- integrity of the source `boot.img`
+- integrity of the patched `magisk_patched.img`
 
-before flashing.
+Use at your own risk.
+
+---
+
+## Screenshots
+
+![Screenshot 1](./assets/screenshots/screenshot-1.jpg)
+![Screenshot 2](./assets/screenshots/screenshot-2.jpg)
+![Screenshot 3](./assets/screenshots/screenshot-3.jpg)
+![Screenshot 4](./assets/screenshots/screenshot-4.jpg)
+![Screenshot 5](./assets/screenshots/screenshot-5.jpg)
+![Screenshot 6](./assets/screenshots/screenshot-6.jpg)
+![Screenshot 7](./assets/screenshots/screenshot-7.jpg)
+![Screenshot 8](./assets/screenshots/screenshot-8.jpg)
+![Screenshot 9](./assets/screenshots/screenshot-9.jpg)
