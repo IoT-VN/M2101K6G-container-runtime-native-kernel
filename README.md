@@ -20,7 +20,7 @@ If your model is different, **do not use this build**.
 This setup was tested on:
 
 - `lineage-23.2-20260319-nightly-sweet-signed.zip`
-- [lineage-23.2-20260319-nightly-sweet-signed.zip]([https://github.com/ravindu644/Android-Kernel-Tutorials](https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip])) - [lineage-23.2-20260319-nightly-sweet-signed.zip](https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip)
+- [lineage-23.2-20260319-nightly-sweet-signed.zip](https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip)
 ---
 
 ## What this kernel patch set does
@@ -45,7 +45,7 @@ In short: this is a **device-ready kernel config with container-oriented native 
 
 ### Steps
 
-1. Extract or download the correct `boot.img` from - [Releases]([https://github.com/ravindu644/Android-Kernel-Tutorials](https://github.com/IoT-VN/M2101K6G-container-runtime-native-kernel/releases/download/v1.0/boot.img)
+1. Extract or download the correct `boot.img` from - [Releases](https://github.com/IoT-VN/M2101K6G-container-runtime-native-kernel/releases/download/v1.0/boot.img)
 2. Open **Magisk** and patch that `boot.img`.
 3. Magisk will generate a patched image, usually named:
    - `magisk_patched.img`
