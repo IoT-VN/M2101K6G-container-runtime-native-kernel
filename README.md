@@ -20,7 +20,7 @@ If your model is different, **do not use this build**.
 This setup was tested on:
 
 - `lineage-23.2-20260319-nightly-sweet-signed.zip`
-- [lineage-23.2-20260319-nightly-sweet-signed.zip]([https://github.com/ravindu644/Android-Kernel-Tutorials](https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip)
+- [lineage-23.2-20260319-nightly-sweet-signed.zip]([https://github.com/ravindu644/Android-Kernel-Tutorials](https://mirrorbits.lineageos.org/full/sweet/20260319/lineage-23.2-20260319-nightly-sweet-signed.zip]))
 ---
 
 ## What this kernel patch set does
