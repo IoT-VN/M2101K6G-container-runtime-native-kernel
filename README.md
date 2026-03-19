@@ -45,7 +45,7 @@ In short: this is a **device-ready kernel config with container-oriented native 
 
 ### Steps
 
-1. Extract or download the correct `boot.img` from - [Releases](https://github.com/IoT-VN/M2101K6G-container-runtime-native-kernel/releases/download/v1.0/boot.img)
+1. Extract or download the correct `boot.img` from - [Releases](https://github.com/IoT-VN/M2101K6G-container-runtime-native-kernel/releases/tag/v1.0)
 2. Open **Magisk** and patch that `boot.img`.
 3. Magisk will generate a patched image, usually named:
    - `magisk_patched.img`
